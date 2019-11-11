@@ -88,9 +88,15 @@ This function uploads a media file to CobbleVision. You can find it after login 
 ##### Returns
 
 
-- `Response`  This return the Upload Media Response. The body is in JSON format.
+- `Promise<Object>`  This return the Upload Media Response. The body is in JSON format.
 
-
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| response | `object`  | On Resolve: This is the response from the request npm module | &nbsp; |
+| body | `object`  | On Resolve: This is the body of the request npm module. | &nbsp; |
+| headers | `object`  | On Resolve: This are the headers from the request npm module. | &nbsp; |
+| error | `string`  | On Reject: Message of Error | *Optional* |
+| code | `number`  | On Reject: Code of Error | *Optional* |
 
 #### exports.deleteMediaFile(IDArray) 
 
@@ -111,9 +117,15 @@ This function deletes Media from CobbleVision
 ##### Returns
 
 
-- `Response`  This return the Delete Media Response. The body is in JSON format.
+- `Promise<Object>`  This return the Delete Media Response. The body is in JSON format.
 
-
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| response | `object`  | On Resolve: This is the response from the request npm module | &nbsp; |
+| body | `object`  | On Resolve: This is the body of the request npm module. | &nbsp; |
+| headers | `object`  | On Resolve: This are the headers from the request npm module. | &nbsp; |
+| error | `string`  | On Reject: Message of Error | *Optional* |
+| code | `number`  | On Reject: Code of Error | *Optional* |
 
 #### exports.launchCalculation(algorithms, media, type, [notificationURL]) 
 
@@ -136,10 +148,15 @@ Launch a calculation with CobbleVision's Web API. Returns a response object with
 
 ##### Returns
 
+- `Promise<Object>`  This returns the Launch Calculation Response. The body is in JSON format.
 
-- `Response`  This returns the Launch Calculation Response. The body is in JSON format.
-
-
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| response | `object`  | On Resolve: This is the response from the request npm module | &nbsp; |
+| body | `object`  | On Resolve: This is the body of the request npm module. | &nbsp; |
+| headers | `object`  | On Resolve: This are the headers from the request npm module. | &nbsp; |
+| error | `string`  | On Reject: Message of Error | *Optional* |
+| code | `number`  | On Reject: Code of Error | *Optional* |
 
 #### exports.waitForCalculationCompletion(calculationIDArray) 
 
@@ -160,9 +177,15 @@ This function waits until the given calculation ID's are ready to be downloaded!
 ##### Returns
 
 
-- `Response`  This returns the Wait For Calculation Response. The body is in JSON format.
+- `Promise<Object>`  This returns the Wait For Calculation Response. The body is in JSON format.
 
-
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| response | `object`  | On Resolve: This is the response from the request npm module | &nbsp; |
+| body | `object`  | On Resolve: This is the body of the request npm module. | &nbsp; |
+| headers | `object`  | On Resolve: This are the headers from the request npm module. | &nbsp; |
+| error | `string`  | On Reject: Message of Error | *Optional* |
+| code | `number`  | On Reject: Code of Error | *Optional* |
 
 #### exports.deleteCalculation(IDArray) 
 
@@ -183,9 +206,15 @@ This function deletes Result Files or calculations in status "waiting" from Cobb
 ##### Returns
 
 
-- `Response`  This returns the Delete Calculation Response. The body is in JSON format.
+- `Promise<Object>`  This returns the Delete Calculation Response. The body is in JSON format.
 
-
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| response | `object`  | On Resolve: This is the response from the request npm module | &nbsp; |
+| body | `object`  | On Resolve: This is the body of the request npm module. | &nbsp; |
+| headers | `object`  | On Resolve: This are the headers from the request npm module. | &nbsp; |
+| error | `string`  | On Reject: Message of Error | *Optional* |
+| code | `number`  | On Reject: Code of Error | *Optional* |
 
 #### exports.getCalculationResult(idArray, returnOnlyStatusBool) 
 
@@ -207,9 +236,15 @@ Launch a calculation with CobbleVision's Web API. Returns a response object with
 ##### Returns
 
 
-- `Response`  This returns the Get Calculation Result. The body is in json format.
+- `Promise<Object>`  This returns the Get Calculation Result. The body is in json format.
 
-
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| response | `object`  | On Resolve: This is the response from the request npm module | &nbsp; |
+| body | `object`  | On Resolve: This is the body of the request npm module. | &nbsp; |
+| headers | `object`  | On Resolve: This are the headers from the request npm module. | &nbsp; |
+| error | `string`  | On Reject: Message of Error | *Optional* |
+| code | `number`  | On Reject: Code of Error | *Optional* |
 
 #### exports.getCalculationVisualization(id, returnBase64Bool, width, height) 
 
@@ -233,7 +268,13 @@ Request your calculation result by ID with the CobbleVision API. Returns a respo
 ##### Returns
 
 
-- `Response`  This returns the Get Calculation Visualization Result. The body is in binary format.
+- `Promise<Object>`  This returns the Get Calculation Visualization Result. The body is in binary format.
 
-
+| Name | Type | Description |  |
+| ---- | ---- | ----------- | -------- |
+| response | `object`  | On Resolve: This is the response from the request npm module | &nbsp; |
+| body | `object`  | On Resolve: This is the body of the request npm module. | &nbsp; |
+| headers | `object`  | On Resolve: This are the headers from the request npm module. | &nbsp; |
+| error | `string`  | On Reject: Message of Error | *Optional* |
+| code | `number`  | On Reject: Code of Error | *Optional* |
 
