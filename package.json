@@ -1,0 +1,34 @@
+{
+  "name": "@cobblevision/cobblevision-api",
+  "version": "1.0.0",
+  "description": "Official SDK for CobbleVision Computer Vision API",
+  "main": "CobbleVision_API.js",
+  "url": "https://www.cobblevision.de",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Computer",
+    "Vision",
+    "SDK",
+    "Image",
+    "API",
+    "Video",
+    "API",
+    "Software",
+    "Development",
+    "Kit",
+    "API",
+    "CobbleVision"
+  ],
+  "dependencies": {
+    "is-url": "^1.2.4",
+    "mongoose": "^5.7.9",
+    "request": "^2.88.0"
+  },
+  "author": "CobbleVision UG (haftungsbeschränkt)",
+  "license": "GPL-3.0-or-later"
+}
