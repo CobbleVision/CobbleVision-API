@@ -4,6 +4,8 @@ This is the official SDK for the CobbleVision Computer Vision Marketplace &amp; 
 
 You can find the official documentation for our API at: https://app.swaggerhub.com/domains-docs/CobbleVision/CobbleVision/
 
+![Cover Image](https://github.com/CobbleVision/CobbleVision-API/blob/master/Visual_DataBase_Image.jpg "CobbleVision - Marketplace & SaaS for Computer Vision!")
+
 ## Documentation for CobbleVision SDK - NPM Package
 
 * exports.setApiAuth(apiusername, apitoken) 
