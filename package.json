@@ -1,6 +1,6 @@
 {
-  "name": "@cobblevision/cobblevision-api",
-  "version": "1.0.0",
+  "name": "cobblevision-api",
+  "version": "1.0.1",
   "description": "Official SDK for CobbleVision Computer Vision API",
   "main": "CobbleVision_API.js",
   "url": "https://www.cobblevision.de",
@@ -30,5 +30,14 @@
     "request": "^2.88.0"
   },
   "author": "CobbleVision UG (haftungsbeschränkt)",
-  "license": "GPL-3.0-or-later"
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CobbleVision/CobbleVision-API.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CobbleVision/CobbleVision-API/issues"
+  },
+  "homepage": "https://github.com/CobbleVision/CobbleVision-API#readme"
 }

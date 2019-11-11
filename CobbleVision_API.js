@@ -14,41 +14,73 @@ if(fs.existsSync(dirname + "/environment_setup.js")){
 var valid_price_categories = ["high", "medium", "low"]
 var valid_job_types = ["QueuedJob"];
 
-exports.debugging = false;
 
-/** Set the base url for communication with the api of CobbleVision (Default: https://www.cobblevision.com/api/)*/
+//Debugging Level is set by user or false by default
+var debugging = false;
 
+/* Set the base url for communication with the api of CobbleVision (Default: https://www.cobblevision.com/api/)*/
 if(environmentType == false) exports.BaseURL = "https://www.cobblevision.com/api/";
 else exports.BaseURL = serverAdress + "/api/";
 
-/** Set your API Username. Find it at https://www.cobblevision.com/account/details */
+/* Set your API Username. Find it at https://www.cobblevision.com/account/details */
 var apiUserName = "";
 
-/** Set your API Token. Find it at https://www.cobblevision.com/account/details */
+/* Set your API Token. Find it at https://www.cobblevision.com/account/details */
 var apiToken = "";
 
+/** 
+*  This function sets your API Username and API Token for the SDK to use! It does not verify your auth!
+*  @async
+*  @function setApiAuth()
+*  @param {string} apiusername - Username of API
+*  @param {string} apitoken - Token of API
+*  @returns {boolean} Indicating Success of setting Auth Information
+*/
 exports.setApiAuth = function(apiusername, apitoken){
     apiUserName = apiusername;
     apiToken = apitoken;
+    return true;
 };
 
 /** 
-*  This function uploads a media file to CobbleVision. You can find it after login in your media storage. Returns a response object with body, response and headers properties, deducted from npm request module
-*  @constructor
-*  @property {String} price_category - Either high, medium, low
-*  @property {Bool} public - Make Media available publicly or not?
-*  @property {String} name - Name of Media (Non Unique)
-*  @property {Array} tags - Tag Names for Media
-*  @property {Buffer} file - File Buffer from fs.readFile() - instance of UInt8Array;
+*  This function sets your API Username and API Token for the SDK to use! It does not verify your auth!
+*  @param {boolean} debugBool - Boolean to trigger debuggging
+*  @returns {boolean} Indicating Success of setting Debug Information
 */
-exports.uploadMediaFile = async function(price_category, public, name, tags, file){
+exports.setDebugging = function(debugBool){
+    debugging = debugBool;
+    return true;
+};
+
+/**
+ * Promise containing the request response from your API Request
+ * @typedef {object} Response
+ * @property {object} response Resolve: This is the response from the request npm module.
+ * @property {object} body Resolve: This is the body of the request npm module.
+ * @property {object} headers Resolve: This are the headers from the request npm module.
+ * @property {string} error Error: Message of Error
+ * @property {number} code Error: Code of Error
+ */
+
+/** 
+*  This function uploads a media file to CobbleVision. You can find it after login in your media storage. Returns a response object with body, response and headers properties, deducted from npm request module
+*  @async
+*  @function uploadMediaFile()  
+*  @param {string} price_category - Either high, medium, low
+*  @param {boolean} publicBool - Make Media available publicly or not?
+*  @param {string} name - Name of Media (Non Unique)
+*  @param {array} tags - Tag Names for Media - Array of Strings
+*  @param {buffer} file - File Buffer from fs.readFile() - instance of UInt8Array;
+*  @returns {Response} This return the Upload Media Response. The body is in JSON format.
+*/
+exports.uploadMediaFile = async function(price_category, publicBool, name, tags, file){
     return new Promise(async function(resolve, reject){
         try{
             var endpoint = "media";
             if(exports.BaseURL.charAt(exports.BaseURL.length-1) != "/") throw new Error("Cobble Base Path must end with a slash '/'"); 
 
-            var keyArray = ["price_category", "public", "name", "tags", "Your API User Key", "Your API Token"];
-            var valueArray = [price_category, public, name, tags, apiUserName, apiToken];
+            var keyArray = ["price_category", "publicBool", "name", "tags", "Your API User Key", "Your API Token"];
+            var valueArray = [price_category, publicBool, name, tags, apiUserName, apiToken];
             var typeArray = ["string","boolean","string", "array", "string", "string"];
             
             await checkTypeOfParameter(valueArray, typeArray).catch((err) => {
@@ -63,7 +95,7 @@ exports.uploadMediaFile = async function(price_category, public, name, tags, fil
      
             var jsonObject = {
                 "price_category": price_category,
-                "public": public,
+                "public": publicBool,
                 "name": name,
                 "tags": tags,
                 "file": file.toString("binary"),
@@ -84,19 +116,21 @@ exports.uploadMediaFile = async function(price_category, public, name, tags, fil
             }
 
             var response = await async_request.request(urlOptions).catch((err) => {throw new Error(err)});
-            if(exports.debugging) console.log("Response from Media Upload " + JSON.stringify(response.body));
+            if(debugging) console.log("Response from Media Upload " + JSON.stringify(response.body));
 
             resolve(response);
         }catch(err){
-            if(exports.debugging) console.log(err);
+            if(debugging) console.log(err);
             reject(err);
         }                 
     });
 }
 
 /** This function deletes Media from CobbleVision
-*  @constructor
-*  @property {Array} IDArray Array of ID's as Strings
+*  @async
+*  @function deleteMediaFile()  
+*  @param {array} IDArray Array of ID's as Strings
+*  @returns {Response} This return the Delete Media Response. The body is in JSON format.
 */
 exports.deleteMediaFile = async function(IDArray){
     return new Promise(async function(resolve, reject){
@@ -129,22 +163,24 @@ exports.deleteMediaFile = async function(IDArray){
 
             var response = await async_request.request(urlOptions).catch((err) => {throw new Error(err)});
 
-            if(exports.debugging) console.log("Response from Media Delete: " + response.response.statusCode)
+            if(debugging) console.log("Response from Media Delete: " + response.response.statusCode)
 
             resolve(response);
         }catch(err){
-            if(exports.debugging) console.log(err);
+            if(debugging) console.log(err);
             reject(err);
         }                 
     });
 }
 
 /** Launch a calculation with CobbleVision's Web API. Returns a response object with body, response and headers properties, deducted from npm request module;
-*  @constructor
-*  @property {Array} algorithms Array of Algorithm Names
-*  @property {Array} media Array of Media ID's/*  
-*  @property {String} type Type of Job: QueuedJob
-*  @property {Null/String} notificationURL Optional - Notify user upon finishing calculation!
+*  @async
+*  @function launchCalculation() 
+*  @param {array} algorithms Array of Algorithm Names
+*  @param {array} media Array of Media ID's  
+*  @param {string} type Type of Job - Currently Always "QueuedJob"
+*  @param {string} [notificationURL] Optional - Notify user upon finishing calculation!
+*  @returns {Response} This returns the Launch Calculation Response. The body is in JSON format.
 */  
 exports.launchCalculation = async function(algorithms, media, type, notificationURL){
     return new Promise(async function(resolve, reject){
@@ -192,18 +228,20 @@ exports.launchCalculation = async function(algorithms, media, type, notification
             }
 
             var response = await async_request.request(urlOptions).catch((err) => {throw new Error(err)});
-            if(exports.debugging) console.log("Return from Create Calc: " + response.body);
+            if(debugging) console.log("Return from Create Calc: " + response.body);
             resolve(response);
         }catch(err){
-            if(exports.debugging) console.log(err);
+            if(debugging) console.log(err);
             reject(err);
         }   
     });
 };
 
 /** This function waits until the given calculation ID's are ready to be downloaded!
-*  @constructor
-*  @property {Array} calculationIDArray Array of Calculation ID's
+*  @async
+*  @function waitForCalculationCompletion() 
+*  @param {array} calculationIDArray Array of Calculation ID's
+*  @returns {Response} This returns the Wait For Calculation Response. The body is in JSON format.
 */  
 exports.waitForCalculationCompletion = async function(calculationIDArray){
     return new Promise(async function(resolve, reject){
@@ -253,15 +291,17 @@ exports.waitForCalculationCompletion = async function(calculationIDArray){
             }
             resolve(response);
         }catch(err){
-            if(exports.debugging) console.log(err);
+            if(debugging) console.log(err);
             reject(err);
         }                 
     });
 };
 
 /** This function deletes Result Files or calculations in status "waiting" from CobbleVision. You cannot delete finished jobs beyond their result files, as we keep them for billing purposes.
-*  @constructor
-*  @property {Array} IDArray Array of ID's as Strings
+*  @async
+*  @function deleteCalculation()
+*  @param {array} IDArray Array of ID's as Strings
+*  @returns {Response} This returns the Delete Calculation Response. The body is in JSON format.
 */
 exports.deleteCalculation = async function(IDArray){
     return new Promise(async function(resolve, reject){
@@ -295,15 +335,18 @@ exports.deleteCalculation = async function(IDArray){
             var response = await async_request.request(urlOptions).catch((err) => {throw new Error(err)});
             resolve(response);
         }catch(err){
-            if(exports.debugging) console.log(err);
+            if(debugging) console.log(err);
             reject(err);
         }                 
     });
 }
 
 /** Launch a calculation with CobbleVision's Web API. Returns a response object with body, response and headers properties, deducted from npm request module;
-*  @property {Array} idArray ID of calculation to return result Array 
-*  @property {Boolean} returnOnlyStatusBool Return full result or only status? See Doc for more detailed description!
+*  @async
+*  @function getCalculationResult()
+*  @param {array} idArray ID of calculation to return result Array 
+*  @param {boolean} returnOnlyStatusBool Return full result or only status? See Doc for more detailed description!
+*  @returns {Response} This returns the Get Calculation Result. The body is in json format.
 */
 exports.getCalculationResult = async function(idArray, returnOnlyStatusBool){
     return new Promise(async function(resolve, reject){
@@ -339,18 +382,20 @@ exports.getCalculationResult = async function(idArray, returnOnlyStatusBool){
             var response = await async_request.request(urlOptions).catch((err) => {throw new Error(err)});
             resolve(response);
         }catch(err){
-            if(exports.debugging) console.log(err);
+            if(debugging) console.log(err);
             reject(err);
         }   
     });
 }
 
 /** Request your calculation result by ID with the CobbleVision API. Returns a response object with body, response and headers properties, deducted from npm request module;
-*  @constructor
-*  @property {Array} id ID of calculation to return result/check String
-*  @property {Boolean} returnBase64Bool Return Base64 String or image buffer as string?
-*  @property {Number} width target width of visualization file
-*  @property {Number} height target height of visualization file
+*  @async
+*  @function getCalculationVisualization()
+*  @param {array} id ID of calculation to return result/check String
+*  @param {boolean} returnBase64Bool Return Base64 String or image buffer as string?
+*  @param {number} width target width of visualization file
+*  @param {number} height target height of visualization file
+*  @returns {Response} This returns the Get Calculation Visualization Result. The body is in binary format.
 */
 exports.getCalculationVisualization = async function(id, returnBase64Bool, width, height){
     return new Promise(async function(resolve, reject){
@@ -393,17 +438,12 @@ exports.getCalculationVisualization = async function(id, returnBase64Bool, width
             await wait(3000);
             resolve(response);
         }catch(err){
-            if(exports.debugging) console.log(err);
+            if(debugging) console.log(err);
             reject(err);
         }   
     });
 }
 
-/**
- * Checking whether object properties have correct variable type
- * @property {Object} targetArray 
- * @property {Array}  assertTypeArray Array of types in string
- */
 var checkTypeOfParameter = async function(targetArray, assertTypeArray){
     return new Promise(async function(resolve, reject){
         try{
