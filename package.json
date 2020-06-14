@@ -1,9 +1,9 @@
 {
   "name": "cobblevision-api",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "Official SDK for CobbleVision Computer Vision API",
   "main": "CobbleVision_API.js",
-  "url": "https://www.cobblevision.de",
+  "url": "https://www.cobblevision.com",
   "directories": {
     "lib": "lib"
   },

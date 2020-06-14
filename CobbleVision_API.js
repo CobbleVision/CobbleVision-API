@@ -19,7 +19,7 @@ var valid_job_types = ["QueuedJob"];
 var debugging = false;
 
 /* Set the base url for communication with the api of CobbleVision (Default: https://www.cobblevision.com/api/)*/
-if(environmentType == false) exports.BaseURL = "https://www.cobblevision.com/api/";
+if(environmentType == false || environmentType === "demo") exports.BaseURL = "https://www.cobblevision.com/api/";
 else exports.BaseURL = serverAdress + "/api/";
 
 /* Set your API Username. Find it at https://www.cobblevision.com/account/details */
@@ -200,8 +200,9 @@ exports.launchCalculation = async function(algorithms, media, type, notification
             });
 
             if(valid_job_types.indexOf(type) == -1) throw new Error("Calculation Type is not valid! Please recheck with our API!");
-            var invalidAlgorithms = algorithms.filter(algorithmID => !mongoose.Types.ObjectId.isValid(algorithmID))
-            if(invalidAlgorithms.length > 0) throw new Error("You supplied an algorithm ID, that is invalid in format.")
+            
+	    //var invalidAlgorithms = algorithms.filter(algorithmID => !mongoose.Types.ObjectId.isValid(algorithmID))
+            //if(invalidAlgorithms.length > 0) throw new Error("You supplied an algorithm ID, that is invalid in format.")
 
             var invalidMedia = media.filter(mediaID => !mongoose.Types.ObjectId.isValid(mediaID))
             if(invalidMedia.length > 0) throw new Error("You supplied a Media ID, that is invalid in format.")        
